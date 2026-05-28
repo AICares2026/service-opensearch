@@ -4,13 +4,22 @@ service:
 image:
   repository: 952893849914.dkr.ecr.us-east-1.amazonaws.com/aicares-application/opensearch
   tag: latest
+  pullPolicy: Always
 containerPort: 9200
 resources:
   limits:
     memory: "500Mi"
   requests:
-    memory: "64Mi"
-    cpu: "50m"
-env: []
+    memory: "256Mi"
+    cpu: "100m"
+env:
+  - name: OPENSEARCH_INITIAL_ADMIN_PASSWORD
+    value: "Admin@OpenSearch123"
+  - name: discovery.type
+    value: "single-node"
+  - name: DISABLE_SECURITY_PLUGIN
+    value: "true"
+  - name: OPENSEARCH_JAVA_OPTS
+    value: "-Xms256m -Xmx256m"
 nodeSelector:
   eks.amazonaws.com/nodegroup: graviton-workers
